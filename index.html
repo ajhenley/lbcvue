@@ -87,35 +87,7 @@
 </head>
 <body>
     <div id="app">
-        <div class="product">
-            <div class="product-image">
-                <img v-bind:src="image" v-bind:alt="altText" />
-            </div>
-            <div class="product-info">
-                <h1>{{ product }}</h1>
-                <p v-if="inStock">In Stock</p>
-                <p v-else="inStock">Out of Stock</p>
-
-                <ul>
-                    <li v-for="detail in details">{{ detail }}</li>
-                </ul>
-
-                <div class="color-box"
-                     v-for="variant in variants" :key="variant.variantId"
-                     :style="{ backgroundColor: variant.variantColor }"
-                     @mouseover="updateProduct(variant.variantImage)">
-
-                </div>
-
-                <button v-on:click="cart += 1"
-                    :disabled="!inStock"
-                    :class="{ disabledButton: !inStock }">Add to cart</button>
-
-                <div class="cart">
-                    <p>Cart({{ cart}})</p>
-                </div>
-            </div>
-        </div>
+        <product></product>
     </div>
 
     <script src="https://unpkg.com/vue"></script>
