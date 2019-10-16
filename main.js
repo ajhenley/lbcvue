@@ -12,29 +12,26 @@ Vue.component('product', {
                 <img v-bind:src="image"  />
             </div>
             <div class="product-info">
-                <h1>{{ product }}</h1>
+
+                <h1>{{ title }}</h1>
+                <p>Shipping: {{ shipping }}</p>
                 <p v-if="inStock">In Stock</p>
                 <p v-else="inStock">Out of Stock</p>
-                <p>Shipping: {{ shipping }}</p>
                 <p>User is premium: {{ premium }}</p>
+                <h2>Details</h2>
                 <ul>
                     <li v-for="detail in details">{{ detail }}</li>
                 </ul>
 
-                <div class="color-box"
-                     v-for="(variant, index) in variants" :key="variant.variantId"
-                     :style="{ backgroundColor: variant.variantColor }"
-                     @mouseover="updateProduct(index)">
+                <h3>Colors</h3>
+                <div v-for="(variant, index) in variants" :key="variant.variantId">
+                     <div class="color-box" :style="{ backgroundColor: variant.variantColor }"
+                     @mouseover="updateProduct(index)"></div>
+                     <button :class="{ disabledButton: !inStock }" v-on:click="addToCart"
+                            :disabled="!inStock">Add to Cart</button>
+                     
                 </div>
-
-                <button v-on:click="addToCart"
-                    :disabled="!inStock"
-                    :class="{ disabledButton: !inStock }">Add to cart</button>
-
-                <div class="cart">
-                    <p>Cart({{ cart}})</p>
-                </div>
-            </div>
+           </div>
 
         </div>
     `,
@@ -46,31 +43,32 @@ Vue.component('product', {
             details: ["80% cotton", "20% polyester", "Gender-neutral"],
             variants: [
                 {
-                    variantId: 2234,
+                    variantId: 1,
                     variantColor: "black",
                     variantImage: "assets/blackshoes.jpg",
                     variantQuantity: 10
                 },
                 {
-                    variantId: 2235,
+                    variantId: 2,
                     variantColor: "brown",
                     variantImage: "assets/brownshoes.jpg",
                     variantQuantity: 10
                 },
                 {
-                    variantId: 2236,
+                    variantId: 3,
                     variantColor: "red",
                     variantImage: "assets/redshoes.jpg",
                     variantQuantity: 0
                 }
             ],
-            cart: 0
+            cart: []
 
         }
     },
     methods: {
         addToCart(){
-            this.cart += 1
+            this.$emit('add-to-cart',
+                this.variants[this.selectedVariant].variantId)
         },
         updateProduct(index){
             this.selectedVariant = index
@@ -96,6 +94,15 @@ Vue.component('product', {
     }
 })
 var app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        premium:true,
+        cart: []
+    },
+    methods: {
+        updateCart(id) {
+            this.cart.push(id)
+        }
+    }
 })
 
