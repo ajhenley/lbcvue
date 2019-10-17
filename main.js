@@ -91,6 +91,17 @@ Vue.component('product', {
             }
             return 2.99
         }
+    },
+    computed: {
+        title() {
+            return this.brand + ' ' + this.product
+        },
+        image() {
+            return this.variants[this.selectedVariant].variantImage
+        },
+        inStock(){
+            return this.variants[this.selectedVariant].variantQuantity
+        }
     }
 })
 var app = new Vue({
